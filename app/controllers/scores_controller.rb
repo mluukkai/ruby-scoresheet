@@ -97,16 +97,17 @@ class ScoresController < ApplicationController
       user_exercise[pull_request_users[pr]] = pull_requests[pr].include?('passed')
     end
 
+    puts "----"
+    puts nro
+    puts user_exercise
+
     user_exercise
   end
 
   def exercises(exercise_cnt)
-    exercises = []
-
     users = []
 
     (1..exercise_cnt).each do |cnt|
-      exercises << exercise(cnt)
       users << exercise(cnt).keys
     end
 
@@ -116,6 +117,7 @@ class ScoresController < ApplicationController
 
     (1..exercise_cnt).each do |cnt|
       exercise(cnt).each do |user, status|
+        puts "#{user} #{status} #{exercise_cnt}"
         user_exercises[user] = {} unless user_exercises[user]
         user_exercises[user][cnt] = status
       end
