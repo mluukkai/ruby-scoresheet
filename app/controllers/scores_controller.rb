@@ -117,7 +117,7 @@ class ScoresController < ApplicationController
 
     (1..exercise_cnt).each do |cnt|
       exercise(cnt).each do |user, status|
-        puts "#{user} #{status} #{exercise_cnt}"
+        puts "#{user} #{status} #{cnt}"
         user_exercises[user] = {} unless user_exercises[user]
         user_exercises[user][cnt] = status
       end
