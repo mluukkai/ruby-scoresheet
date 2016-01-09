@@ -9,18 +9,18 @@ class ExerciseFetcher
     exercise = "mluukkai/ruby-tehtava#{num}"
     travis_pulls = find_pulls_travis exercise
 
-    pull_request_users pull_requests('mluukkai', "ruby-tehtava#{num}")
-    user_exercises travis_pulls
+    pull_users = pull_request_users pull_requests('mluukkai', "ruby-tehtava#{num}")
+    user_exercises(travis_pulls, pull_users)
   end
 
-  def user_exercises(pull_requests)
-    user_exercises = {}
+  def user_exercises(pull_requests, pull_users)
+    exercises = {}
 
     pull_requests.each do |pr, status|
-      user_exercises[pull_request_users[pr]] = status.include?('passed')
+      exercises[pull_users[pr]] = status(pull_requests[pr])
     end
 
-    user_exercises
+    exercises
   end
 
   def pull_request_users(pull_requests)
@@ -49,5 +49,11 @@ class ExerciseFetcher
   def pull_requests(user, repo)
     github = Github.new user: user, repo: repo
     github.pull_requests.list
+  end
+
+  def status(pull_request)
+    return "pass" if pull_request.include?('passed')
+    return "testing" if pull_request.include?('started') or pull_request.include?('created')
+    "fail"
   end
 end

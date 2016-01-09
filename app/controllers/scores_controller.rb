@@ -4,10 +4,6 @@ class ScoresController < ApplicationController
   # GET /scores
   # GET /scores.json
   def index
-<<<<<<< HEAD
-    @exercise_cnt = 2
-    @exercise_stats = exercises(@exercise_cnt)      
-=======
     @exercise_cnt = Conf.exercises
     @exercise_stats = Exercise.all
 
@@ -15,7 +11,6 @@ class ScoresController < ApplicationController
       format.html
       format.json { render json: @exercise_stats }
     end
->>>>>>> upstream/master
   end
 
   # GET /scores/1
