@@ -2,6 +2,7 @@ class Exercise
   def self.exercise(nro)
     repository = "#{Conf.repository}#{nro}"
 
+    Travis.clear_cache
     travis_repo = Travis::Repository.find(repository)
 
     pull_requests = {}
