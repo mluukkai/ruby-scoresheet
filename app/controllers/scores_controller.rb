@@ -5,7 +5,7 @@ class ScoresController < ApplicationController
   # GET /scores.json
   def index
     @exercise_cnt = 2
-    @exercise_stats = exercises(@exercise_cnt)
+    @exercise_stats = exercises(@exercise_cnt)      
   end
 
   # GET /scores/1
