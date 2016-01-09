@@ -34,7 +34,7 @@ class Exercise
 
     pull_requests.keys.each do |pr|
       if pull_request_users[pr]
-        user_exercise[pull_request_users[pr]] = pull_requests[pr].include?('passed')
+        user_exercise[pull_request_users[pr]] = status(pull_requests[pr])
       end
     end
 
@@ -66,5 +66,11 @@ class Exercise
     end
 
     user_exercises
+  end
+
+  def self.status(pull_request)
+    return "pass" if pull_request.include?('passed')
+    return "testing" if pull_request.include?('started') or pull_request.include?('created')
+    "fail"
   end
 end
