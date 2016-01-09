@@ -7,7 +7,7 @@ class ScoresController < ApplicationController
     @scores = Score.all
     puts "INDEX"
 
-    @exercise_cnt = 3
+    @exercise_cnt = Conf.exercises
     @exercise_stats = exercises(@exercise_cnt)
     expires_in 1.second, :public => true
 
@@ -73,9 +73,10 @@ class ScoresController < ApplicationController
   end
 
   def exercise(nro)
-    tehtava = "mluukkai/ruby-tehtava#{nro}"
+    repository = "#{Conf.repository}#{nro}"
+    #mluukkai/ruby-tehtava#{nro}"
 
-    repo = Travis::Repository.find(tehtava)
+    repo = Travis::Repository.find(repository)
 
     pull_requests = {}
 
@@ -92,7 +93,7 @@ class ScoresController < ApplicationController
       :username => ENV['USERNAME'],
       :password => ENV['PASSWORD']
     }
-    url = "https://api.github.com/repos/#{tehtava}/pulls"
+    url = "https://api.github.com/repos/#{repository}/pulls"
     response = HTTParty.get(url, :basic_auth => auth).parsed_response
 
     pull_request_users = {}
@@ -106,10 +107,6 @@ class ScoresController < ApplicationController
     pull_requests.keys.each do |pr|
       user_exercise[pull_request_users[pr]] = pull_requests[pr].include?('passed')
     end
-
-    puts "----"
-    puts nro
-    puts user_exercise
 
     user_exercise
   end
@@ -127,7 +124,6 @@ class ScoresController < ApplicationController
 
     (1..exercise_cnt).each do |cnt|
       exercise(cnt).each do |user, status|
-        puts "#{user} #{status} #{cnt}"
         user_exercises[user] = {} unless user_exercises[user]
         user_exercises[user][cnt] = status
       end

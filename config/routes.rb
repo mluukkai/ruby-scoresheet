@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :confs
+
   resources :scores
   root 'scores#index'
 
