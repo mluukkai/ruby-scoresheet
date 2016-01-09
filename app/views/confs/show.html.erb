@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Exercise count:</strong>
+  <%= @conf.exercise_count %>
+</p>
+
+<p>
+  <strong>Repository base:</strong>
+  <%= @conf.repository_base %>
+</p>
+
+<%= link_to 'Edit', edit_conf_path(@conf) %> |
+<%= link_to 'Back', confs_path %>

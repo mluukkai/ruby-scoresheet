@@ -15,7 +15,7 @@
       <tr>
         <td><%= link_to name, "http://github.com/#{name}" %></td>
         <% (1..@exercise_cnt).each do |ex| %>
-          <th> <%= format(scores[ex]) %></th>
+          <th> <%= scores[ex] %></th>
         <% end %>
       </tr>
     <% end %>
