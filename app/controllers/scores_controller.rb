@@ -6,6 +6,13 @@ class ScoresController < ApplicationController
   def index
     @exercise_cnt = 3
     @exercise_stats = exercises(@exercise_cnt)
+
+    puts "here"
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @exercise_stats }
+    end
   end
 
   # GET /scores/1
