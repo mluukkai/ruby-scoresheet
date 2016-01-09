@@ -4,12 +4,10 @@ class ScoresController < ApplicationController
   # GET /scores
   # GET /scores.json
   def index
-    @scores = Score.all
     puts "INDEX"
 
     @exercise_cnt = Conf.exercises
-    @exercise_stats = exercises(@exercise_cnt)
-    expires_in 1.second, :public => true
+    @exercise_stats = Exercise.all
 
     respond_to do |format|
       format.html
@@ -20,7 +18,6 @@ class ScoresController < ApplicationController
   # GET /scores/1
   # GET /scores/1.json
   def show
-    puts "SHOW"
   end
 
   # GET /scores/new
@@ -71,67 +68,6 @@ class ScoresController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  def exercise(nro)
-    repository = "#{Conf.repository}#{nro}"
-    #mluukkai/ruby-tehtava#{nro}"
-
-    repo = Travis::Repository.find(repository)
-
-    pull_requests = {}
-
-    repo.each_build do |build|
-      if build.pull_request_number
-        unless pull_requests[build.pull_request_number]
-          pull_requests[build.pull_request_number] = []
-        end
-        pull_requests[build.pull_request_number] << build.state
-      end
-    end
-
-    auth = {
-      :username => ENV['USERNAME'],
-      :password => ENV['PASSWORD']
-    }
-    url = "https://api.github.com/repos/#{repository}/pulls"
-    response = HTTParty.get(url, :basic_auth => auth).parsed_response
-
-    pull_request_users = {}
-
-    response.each do |pr|
-      pull_request_users[pr['number']] = pr['user']['login']
-    end
-
-    user_exercise = {}
-
-    pull_requests.keys.each do |pr|
-      user_exercise[pull_request_users[pr]] = pull_requests[pr].include?('passed')
-    end
-
-    user_exercise
-  end
-
-  def exercises(exercise_cnt)
-    users = []
-
-    (1..exercise_cnt).each do |cnt|
-      users << exercise(cnt).keys
-    end
-
-    users = users.uniq
-
-    user_exercises = {}
-
-    (1..exercise_cnt).each do |cnt|
-      exercise(cnt).each do |user, status|
-        user_exercises[user] = {} unless user_exercises[user]
-        user_exercises[user][cnt] = status
-      end
-    end
-
-    user_exercises
-  end
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
