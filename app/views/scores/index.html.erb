@@ -24,4 +24,6 @@
   </tbody>
 </table>
 
-<%= @scores =>
+<% @scores.each do |s| %>
+  <%= s.name %>
+<% end %>
