@@ -7,8 +7,6 @@ class Exercise
     pull_requests = {}
 
     travis_repo.each_build do |build|
-      puts build.state
-      puts build.pull_request_number
       if build.pull_request_number
         unless pull_requests[build.pull_request_number]
           pull_requests[build.pull_request_number] = []

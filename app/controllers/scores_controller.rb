@@ -9,6 +9,8 @@ class ScoresController < ApplicationController
     @exercise_cnt = Conf.exercises
     @exercise_stats = Exercise.all
 
+    puts @exercise_stats
+
     respond_to do |format|
       format.html
       format.json { render json: @exercise_stats }
