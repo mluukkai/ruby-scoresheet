@@ -4,11 +4,12 @@ class ScoresController < ApplicationController
   # GET /scores
   # GET /scores.json
   def index
+    @scores = Score.all
+    puts "INDEX"
+
     @exercise_cnt = 3
     @exercise_stats = exercises(@exercise_cnt)
     expires_in 1.second, :public => true
-
-    puts "here"
 
     respond_to do |format|
       format.html
