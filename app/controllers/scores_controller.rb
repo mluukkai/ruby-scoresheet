@@ -4,12 +4,8 @@ class ScoresController < ApplicationController
   # GET /scores
   # GET /scores.json
   def index
-    puts "INDEX"
-
     @exercise_cnt = Conf.exercises
     @exercise_stats = Exercise.all
-
-    puts @exercise_stats
 
     respond_to do |format|
       format.html
