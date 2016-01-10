@@ -33,8 +33,10 @@ class ExerciseFetcher
 
     Conf.exercises.downto 1 do |number|
       exercises[number].each do |user, status|
-        user_exercises[user] = {} unless user_exercises[user]
-        user_exercises[user][number] = status
+        if user.present? then
+          user_exercises[user] = {} unless user_exercises[user]
+          user_exercises[user][number] = status
+        end
       end
     end
 
@@ -63,7 +65,9 @@ class ExerciseFetcher
   def pull_request_users(pull_requests)
     requests = {}
     pull_requests.each do |pr|
-      requests[pr['number']] = pr['user']['login']
+      if pr['user']['login'].present? then
+        requests[pr['number']] = pr['user']['login']
+      end
     end
     requests
   end
