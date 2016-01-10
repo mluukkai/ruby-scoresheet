@@ -5,7 +5,7 @@ class ScoresController < ApplicationController
   # GET /scores.json
   def index
     @exercise_cnt = Conf.exercises
-    @exercise_stats = Exercise.all
+    @exercise_stats = ExerciseFetcher.new.all
 
     respond_to do |format|
       format.html
