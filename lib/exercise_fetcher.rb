@@ -1,7 +1,13 @@
 class ExerciseFetcher
 
   def initialize
-    @auth = "#{ENV["USERNAME"]}:#{ENV["PASSWORD"]}"
+    @auth = auth
+  end
+
+  def auth
+    if ENV["USERNAME"].present? and ENV["PASSWORD"].present? then
+      "#{ENV["USERNAME"]}:#{ENV["PASSWORD"]}"
+    end
   end
 
   def find_users(exercises)
@@ -37,8 +43,8 @@ class ExerciseFetcher
 
 
   def find_exercise_data(num)
-    exercise = "#{Conf.repository}#{num}"
-    travis_pulls = find_pulls_travis exercise
+    repo = "#{Conf.repository}#{num}"
+    travis_pulls = find_pulls_travis repo
 
     pull_users = pull_request_users pull_requests(get_user, get_repo(num))
     user_exercises(travis_pulls, pull_users)
@@ -62,8 +68,11 @@ class ExerciseFetcher
     requests
   end
 
-  def find_pulls_travis(exercise)
-    repo = Travis::Repository.find exercise
+  def find_pulls_travis(repository)
+    client = Travis::Client.new
+    client.clear_cache
+    repo = client.repo(repository)
+
     pull_requests = {}
 
     repo.each_build do |build|
@@ -78,7 +87,7 @@ class ExerciseFetcher
   end
 
   def pull_requests(user, repo)
-    github = Github.new user: user, repo: repo
+    github = Github.new user: user, repo: repo, basic_auth: @auth
     github.pull_requests.list
   end
 
