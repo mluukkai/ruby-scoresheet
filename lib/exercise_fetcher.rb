@@ -56,7 +56,9 @@ class ExerciseFetcher
     exercises = {}
 
     pull_requests.each do |pr, status|
-      exercises[pull_users[pr]] = status(pull_requests[pr])
+      unless exercises[pull_users[pr]] == 'pass'
+        exercises[pull_users[pr]] = status(pull_requests[pr])
+      end
     end
 
     exercises
