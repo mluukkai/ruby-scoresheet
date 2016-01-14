@@ -6,6 +6,7 @@ class ScoresController < ApplicationController
   def index
     @exercise_cnt = Conf.exercises
     @exercise_stats = ExerciseFetcher.new.all
+    @repo = Conf.repository
 
     respond_to do |format|
       format.html

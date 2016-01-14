@@ -5,7 +5,7 @@
     <tr>
       <th>Name</th>
       <% (1..@exercise_cnt).each do |ex| %>
-        <th> <%= link_to "#{ex}", "https://github.com/mluukkai/ruby-tehtava#{ex}" %> </th>
+        <th> <%= link_to "#{ex}", "https://github.com/#{@repo}#{ex}" %> </th>
       <% end %>
     </tr>
   </thead>
