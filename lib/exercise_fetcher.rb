@@ -106,9 +106,9 @@ class ExerciseFetcher
   end
 
   def status(pull_request)
-    return "pass" if pull_request.include?('passed')
-    return "testing" if pull_request.include?('started') or pull_request.include?('created')
-    "fail"
+    return "1" if pull_request.include?('passed')
+    return "?" if pull_request.include?('started') or pull_request.include?('created')
+    "0"
   end
 
   private :get_user, :get_repo, :status, :pull_requests
